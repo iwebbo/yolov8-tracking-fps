@@ -132,6 +132,7 @@ Avec ces étapes, vous pouvez entraîner un modèle YOLOv8 sur un dataset person
 ![Capture d'écran 2025-02-02 184733](https://github.com/user-attachments/assets/2d829261-e280-41ce-a99a-d0819b8650b9)
 ![Capture d'écran 2025-02-01 223906](https://github.com/user-attachments/assets/4b017dfa-542e-42fe-a1dd-b44fc40a6575)
 
-### Le script fournit gère également les zones d'exclusions, afin que la detection ne se fasse pas dans cette frame. 
+Le script fournit gère également les zones d'exclusions, afin que la detection ne se fasse pas dans cette frame.
+Si vous voulez trouver et entrainer d'autres modèles, https://universe.roboflow.com 
 
 
