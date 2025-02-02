@@ -128,3 +128,10 @@ Ce script charge le modèle ONNX, prétraite une image et exécute l'inférence 
 ## Conclusion
 Avec ces étapes, vous pouvez entraîner un modèle YOLOv8 sur un dataset personnalisé et le convertir au format ONNX pour une intégration facile dans vos projets.
 
+### Voici un petit exemple pour un FPS 
+![Capture d'écran 2025-02-02 184733](https://github.com/user-attachments/assets/2d829261-e280-41ce-a99a-d0819b8650b9)
+![Capture d'écran 2025-02-01 223906](https://github.com/user-attachments/assets/4b017dfa-542e-42fe-a1dd-b44fc40a6575)
+
+### Le script fournit gère également les zones d'exclusions, afin que la detection ne se fasse pas dans cette frame. 
+
+
