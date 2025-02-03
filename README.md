@@ -151,9 +151,6 @@ Ce script suppose que la sortie du modèle ONNX est un tableau numpy contenant l
 *   **Commentaires:** Ajout de commentaires plus détaillés pour expliquer chaque étape.
 
 ## 4 Run & Test
-
-
-
 Utilisation
 Placez votre modèle YOLOv8 entraîné (best_fort.pt) dans le même répertoire que le script.
 Exécutez le script :
@@ -161,22 +158,22 @@ Bash
 
 python live_check_yolov8.py
 
-Paramètres
+## Paramètres:
 CONFIDENCE_THRESHOLD : Seuil de confiance pour les détections (par défaut : 0.5).
 IOU_THRESHOLD : Seuil de l'Intersection over Union pour le NMS (par défaut : 0.45).
 Vous pouvez ajuster ces paramètres directement dans le script.
 
-Fonctionnement
+## Fonctionnement:
 Le script capture une capture d'écran de votre écran, la redimensionne, effectue une détection d'objets avec votre modèle YOLOv8, puis affiche le résultat avec les boîtes englobantes et les étiquettes.
-
 Appuyez sur la touche 'q' pour quitter la boucle et fermer la fenêtre.
 
-Notes
+## Notes: 
 Assurez-vous que votre modèle YOLOv8 est compatible avec la version de ultralytics que vous utilisez.
 Si vous rencontrez des erreurs, vérifiez le chemin du fichier de modèle et assurez-vous que les librairies sont correctement installées.
 Ce script utilise l'écran principal. Si vous souhaitez capturer un autre écran, vous devrez ajuster les paramètres de pyautogui.screenshot().
 Les performances peuvent varier en fonction de la puissance de votre ordinateur et de la taille de l'écran.
-Améliorations possibles
+
+## Améliorations possibles
 Ajouter des options pour personnaliser la taille de la fenêtre d'affichage.
 Permettre de sélectionner un autre écran à capturer.
 Ajouter un compteur de FPS (images par seconde) pour évaluer les performances.
@@ -185,14 +182,14 @@ Utiliser un thread ou un processus séparé pour la capture d'écran afin d'amé
 
 
 ## 5 Run with an Arduino to tracking a target
-
-Matériel
+##Matériel
 Un Arduino connecté à votre ordinateur via le port série.
 Un jeu FPS.
-Utilisation
-Placez votre modèle : Copiez votre fichier de modèle YOLOv8 entraîné (best_fort.pt) dans le même répertoire que ce script.
+
+##Utilisation
+#Placez votre modèle : Copiez votre fichier de modèle YOLOv8 entraîné (best_fort.pt) dans le même répertoire que ce script.
 Connectez l'Arduino : Connectez votre Arduino à votre ordinateur et notez le port COM utilisé (par exemple, COM10).
-Modifiez le script :
+#Modifiez le script :
 Remplacez 'COM10' dans la variable ser par le port COM correct de votre Arduino.
 Ajustez les paramètres suivants dans le script en fonction de votre configuration :
 CONFIDENCE_THRESHOLD : Seuil de confiance pour la détection.
