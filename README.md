@@ -113,8 +113,7 @@ Le fichier ONNX sera généré dans le dossier `runs/detect/export/`.
 ## Résultat
 
 Une fenêtre affichera l'image avec les objets détectés, leurs boîtes englobantes, leurs noms de classes et leurs confiances.
-![capture](https://github.com/user-attachments/assets/cae8a44f-8469-49f4-99e2-3155cb050402)
-
+![capture](https://github.com/user-attachments/assets/29fd22e4-8ae5-478f-8973-0abbbff56de0)
 
 ## Notes
 
