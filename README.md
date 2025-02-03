@@ -114,6 +114,8 @@ Le fichier ONNX sera généré dans le dossier `runs/detect/export/`.
 
 Une fenêtre affichera l'image avec les objets détectés, leurs boîtes englobantes, leurs noms de classes et leurs confiances.
 ![capture](https://github.com/user-attachments/assets/29fd22e4-8ae5-478f-8973-0abbbff56de0)
+![Capture d'écran 2025-02-02 184733](https://github.com/user-attachments/assets/2d829261-e280-41ce-a99a-d0819b8650b9)
+![Capture d'écran 2025-02-01 223906](https://github.com/user-attachments/assets/4b017dfa-542e-42fe-a1dd-b44fc40a6575)
 
 ## Notes
 
@@ -189,7 +191,8 @@ Un jeu FPS.
 ##Utilisation
 #Placez votre modèle : Copiez votre fichier de modèle YOLOv8 entraîné (best_fort.pt) dans le même répertoire que ce script.
 Connectez l'Arduino : Connectez votre Arduino à votre ordinateur et notez le port COM utilisé (par exemple, COM10).
-#Modifiez le script :
+
+##Modifiez le script :
 Remplacez 'COM10' dans la variable ser par le port COM correct de votre Arduino.
 Ajustez les paramètres suivants dans le script en fonction de votre configuration :
 CONFIDENCE_THRESHOLD : Seuil de confiance pour la détection.
@@ -198,23 +201,27 @@ frame_width, frame_height : Taille de la fenêtre de capture et de traitement.
 GAME_WIDTH, GAME_HEIGHT : Résolution du jeu.
 DEAD_ZONE : Zone morte autour du centre de l'écran où les mouvements ne sont pas envoyés à l'Arduino.
 EXCLUDED_REGION : Zone de l'écran à exclure de la détection (utile pour éviter de cibler des éléments de l'interface du jeu).
-Exécutez le script :
+
+
+##Exécutez le script :
 Bash
 
 python Aimbot_Assist_w_Arduino.py
 Fonctionnement
+
 Le script capture une portion de l'écran, effectue une détection d'objets avec YOLOv8, sélectionne la cible la plus proche du centre de l'écran et envoie les coordonnées de la cible à l'Arduino. L'Arduino peut ensuite être programmé pour contrôler la souris ou d'autres périphériques d'entrée pour viser dans le jeu.
 
 Ctrl : Active/désactive la détection.
 Le script affiche une fenêtre avec le flux vidéo, les détections, la cible sélectionnée (un cercle vert) et la zone d'exclusion (un rectangle rouge).
-Configuration du jeu
+
+##Configuration du jeu
 Assurez-vous que les paramètres du jeu (résolution, sensibilité de la souris) sont configurés de manière appropriée pour fonctionner avec le script.  Il peut être nécessaire d'ajuster les paramètres du script (en particulier SCALE_FACTOR, OFFSET_X, OFFSET_Y) pour une performance optimale.
 
-Code Arduino (exemple) 
+##Code Arduino (exemple) 
 Voici un exemple de code Arduino qui reçoit les commandes du script Python et simule des mouvements de souris :
 
+```
 C++
-
 #include <Mouse.h>
 
 void setup() {
@@ -231,9 +238,11 @@ void loop() {
     Mouse.move(x, y, 0); // Déplacer la souris (x, y, 0)
   }
 }
-Important : Ce code Arduino est un exemple. Vous devrez peut-être l'adapter en fonction de vos besoins et de la façon dont vous souhaitez contrôler le jeu.
 
-Limitations
+```
+##Important : Ce code Arduino est un exemple. Vous devrez peut-être l'adapter en fonction de vos besoins et de la façon dont vous souhaitez contrôler le jeu.
+
+##Limitations
 Les performances peuvent varier en fonction de la puissance de l'ordinateur, de la complexité du modèle YOLOv8 et de la résolution de l'écran.
 Le suivi de cible peut être perdu si l'objet cible est obstrué ou sort de l'écran.
 Ce script est un point de départ. Vous devrez probablement l'affiner pour obtenir les résultats souhaités dans votre jeu spécifique.
@@ -244,8 +253,7 @@ Ce script est un point de départ. Vous devrez probablement l'affiner pour obten
 Avec ces étapes, vous pouvez entraîner un modèle YOLOv8 sur un dataset personnalisé et le convertir au format ONNX pour une intégration facile dans vos projets.
 
 ### Voici un petit exemple pour un FPS 
-![Capture d'écran 2025-02-02 184733](https://github.com/user-attachments/assets/2d829261-e280-41ce-a99a-d0819b8650b9)
-![Capture d'écran 2025-02-01 223906](https://github.com/user-attachments/assets/4b017dfa-542e-42fe-a1dd-b44fc40a6575)
+
 
 Le script fournit gère également les zones d'exclusions, afin que la detection ne se fasse pas dans cette frame.
 Si vous voulez trouver et entrainer d'autres modèles, https://universe.roboflow.com 
