@@ -27,6 +27,9 @@ Chaque fichier `.txt` doit avoir les annotations des objets au format YOLO :
 - `class_id` : ID de la classe
 - `x_center`, `y_center`, `width`, `height` : coordonnées normalisées (entre 0 et 1).
 
+- Ou trouver des dataset custom ?
+- https://universe.roboflow.com
+
 ### 2. Configuration d’un fichier YAML
 Créez un fichier `custom_dataset.yaml` contenant :
 ```yaml
@@ -41,21 +44,36 @@ names:
 Remplacez les chemins et les noms des classes par ceux de votre dataset.
 
 ### 3. Lancement de l’entraînement
+
+Au sein de cette function, nous définissons quelle modèle utiliser : 
+Merci de regarder la documentation officièlle : https://github.com/ultralytics/ultralytics 
+
+Fonctionnalités
+Chargement du Modèle : Choisissez entre un modèle neuf, pré-entraîné ou avec transfert d'apprentissage.
+Entraînement : Spécifiez le nombre d'époques et la taille des lots pour l'entraînement.
+Validation : Option pour valider le modèle après l'entraînement.
+Exportation : Possibilité d'exporter le modèle entraîné dans différents formats.
+
+load (str) : Méthode de chargement du modèle.
+'new' : Crée un nouveau modèle à partir du fichier YAML.
+'pre' : Charge un modèle pré-entraîné.
+'tran' : Charge un modèle à partir du YAML et applique un transfert d'apprentissage.
+traindata (str) : Chemin vers le fichier de configuration des données d'entraînement (par défaut : "fortnite.yaml").
+epochs (int) : Nombre d'époques pour l'entraînement (par défaut : 50).
+batch_size (int) : Taille des lots pour l'entraînement (par défaut : 16).
+export (bool) : Indique si le modèle doit être exporté après l'entraînement (par défaut : True).
+val (bool) : Indique si une validation doit être effectuée après l'entraînement (par défaut : True).
+
 Utilisez le package `ultralytics` pour entraîner YOLOv8 :
 ```python
-from ultralytics import YOLO
-
-# Charger le modèle pré-entraîné
-model = YOLO('yolov8n.pt')
-
-# Entraîner le modèle sur le dataset custom
-model.train(
-    data='custom_dataset.yaml',
-    epochs=50,       # Nombre d'époques
-    imgsz=640,       # Dimension des images
-    batch=16,        # Taille des batchs
-    name='custom_model'
-)
+def custom_train(load='pre', traindata="fortnite.yaml", epochs=50, batch_size=16, export=True, val=True):
+    # Chargement du modèle
+    if load == 'new':
+        model = YOLO('yolov8n.yaml')  # Construire un nouveau modèle à partir du YAML
+    elif load == 'pre':
+        model = YOLO('yolov8n.pt')  # Charger un modèle pré-entraîné
+    elif load == 'tran':
+        model = YOLO('yolov8n.yaml').load('yolov8n.pt')  # Construire à partir du YAML et transférer les poids
 ```
 
 Le modèle entraîné sera sauvegardé dans le dossier `runs/detect/custom_model/`.
@@ -72,58 +90,159 @@ model.export(format='onnx')
 ```
 Le fichier ONNX sera généré dans le dossier `runs/detect/export/`.
 
-### 2. Validation du Modèle ONNX
-Vérifiez le modèle ONNX pour garantir sa compatibilité :
-```python
-import onnx
-import onnxruntime as ort
+### 2. Validation du Modèle PT
+## Installation
 
-# Charger le modèle ONNX
-onnx_model = 'runs/detect/custom_model/weights/best.onnx'
-session = ort.InferenceSession(onnx_model)
+1.  Assurez-vous d'avoir Python installé.
+2.  Installez les librairies requises :
+    ```bash
+    pip install torch ultralytics opencv-python
+    ```
 
-# Vérification des entrées/sorties
-print("Inputs:", session.get_inputs())
-print("Outputs:", session.get_outputs())
-```
+## Utilisation
+
+1.  Placez votre modèle YOLOv8 entraîné (`best_fort.pt`) et l'image à tester (`capture.jpg`) dans le même répertoire que le script.
+2.  Modifiez le script :
+    *   Mettez à jour `model_path` et `image_path` si nécessaire.
+    *   **Surtout, remplacez `["0", "1"]` dans `class_names` par les noms réels de vos classes.**
+3.  Exécutez le script :
+    ```bash
+    python check_from_capture_pt_file_detect.py
+    ```
+
+## Résultat
+
+Une fenêtre affichera l'image avec les objets détectés, leurs boîtes englobantes, leurs noms de classes et leurs confiances.
+![capture](https://github.com/user-attachments/assets/cae8a44f-8469-49f4-99e2-3155cb050402)
+
+
+## Notes
+
+*   Assurez-vous que votre modèle YOLOv8 est compatible avec la version de `ultralytics` que vous utilisez.
+*   Si vous rencontrez des erreurs, vérifiez les chemins des fichiers et les noms de classes.
 
 ## Intégration dans le Script de Détection
 
-### Exemple de Chargement et Inference avec ONNX
-```python
-import cv2
-import numpy as np
-import onnxruntime as ort
+### 3. Validation du modèle ONNX
+Utilisation
+Placez votre modèle ONNX (best_fort.onnx) et l'image à tester (capture.jpg) dans le même répertoire que le script.
+Modifiez le script :
+Mettez à jour model_path et image_path si nécessaire.
+Surtout, remplacez ["0", "1"] dans class_names par les noms réels de vos classes.
+Ajustez input_size si nécessaire (doit correspondre à la taille d'entrée du modèle).
+Exécutez le script :
+Bash
 
-# Charger le modèle ONNX
-onnx_model = 'runs/detect/custom_model/weights/best.onnx'
-session = ort.InferenceSession(onnx_model)
+python check_from_capture_onnx_file_detect.py
+Résultat
+Une fenêtre affichera l'image avec les objets détectés, leurs boîtes englobantes, leurs noms de classes et leurs confiances.
 
-# Prétraitement de l'image
-def preprocess(image, input_size):
-    img = cv2.resize(image, (input_size, input_size))
-    img = img.transpose((2, 0, 1))  # HWC -> CHW
-    img = img / 255.0  # Normalisation
-    img = np.expand_dims(img, axis=0).astype(np.float32)
-    return img
+Notes
+Assurez-vous que votre modèle ONNX est compatible avec ONNX Runtime.
+Si vous rencontrez des erreurs, vérifiez les chemins des fichiers, les noms de classes et la taille d'entrée du modèle.
+Ce script suppose que la sortie du modèle ONNX est un tableau numpy contenant les détections au format attendu (voir la fonction postprocess_detections). Ce format est typique des modèles YOLO, mais peut varier. Si votre modèle a une sortie différente, vous devrez adapter la fonction postprocess_detections.
 
-# Inference
-def detect(image):
-    input_name = session.get_inputs()[0].name
-    output_name = session.get_outputs()[0].name
-    input_size = session.get_inputs()[0].shape[-1]  # Taille des entrées
+**Changements importants et explications :**
 
-    img = preprocess(image, input_size)
-    preds = session.run([output_name], {input_name: img})[0]
-    return preds
-```
+*   **Gestion des erreurs d'image:** Ajout d'une gestion des erreurs dans `preprocess_image` pour lever une exception si l'image ne peut pas être lue.
+*   **Image originale pour le dessin:** La fonction `preprocess_image` retourne maintenant l'image originale *et* l'image prétraitée. L'image originale est utilisée pour dessiner les boîtes, car elle conserve la résolution originale.
+*   **Inférence ONNX:** L'exécution de l'inférence ONNX se fait avec `session.run()`.  Il est *crucial* de récupérer la sortie du modèle correctement. J'ai ajouté `[0]` à la fin pour extraire le résultat du tableau retourné par `session.run()`.  **Vérifiez le format de sortie de votre modèle ONNX**.  Ce code suppose qu'il retourne un seul tenseur contenant les détections.  Si ce n'est pas le cas, vous devrez adapter cette ligne.
+*   **Transposition des détections:** La boucle dans `postprocess_detections` utilise `.T` (transposition) pour itérer sur les détections de manière plus intuitive.
+*   **Conversion en entiers:** La conversion des coordonnées de boîtes en entiers est faite dans `draw_boxes`, juste avant de dessiner, pour plus de sécurité.
+*   **Commentaires:** Ajout de commentaires plus détaillés pour expliquer chaque étape.
 
-Ce script charge le modèle ONNX, prétraite une image et exécute l'inférence pour obtenir les prédictions.
+## 4 Run & Test
 
-## Notes
-- Vous pouvez optimiser le modèle ONNX pour des performances accrues avec des outils comme [ONNX Runtime](https://onnxruntime.ai/).
-- Assurez-vous que vos annotations sont précises pour obtenir un modèle entraîné efficace.
-- Testez le modèle dans des conditions proches de votre scénario réel pour valider les performances.
+
+
+Utilisation
+Placez votre modèle YOLOv8 entraîné (best_fort.pt) dans le même répertoire que le script.
+Exécutez le script :
+Bash
+
+python live_check_yolov8.py
+
+Paramètres
+CONFIDENCE_THRESHOLD : Seuil de confiance pour les détections (par défaut : 0.5).
+IOU_THRESHOLD : Seuil de l'Intersection over Union pour le NMS (par défaut : 0.45).
+Vous pouvez ajuster ces paramètres directement dans le script.
+
+Fonctionnement
+Le script capture une capture d'écran de votre écran, la redimensionne, effectue une détection d'objets avec votre modèle YOLOv8, puis affiche le résultat avec les boîtes englobantes et les étiquettes.
+
+Appuyez sur la touche 'q' pour quitter la boucle et fermer la fenêtre.
+
+Notes
+Assurez-vous que votre modèle YOLOv8 est compatible avec la version de ultralytics que vous utilisez.
+Si vous rencontrez des erreurs, vérifiez le chemin du fichier de modèle et assurez-vous que les librairies sont correctement installées.
+Ce script utilise l'écran principal. Si vous souhaitez capturer un autre écran, vous devrez ajuster les paramètres de pyautogui.screenshot().
+Les performances peuvent varier en fonction de la puissance de votre ordinateur et de la taille de l'écran.
+Améliorations possibles
+Ajouter des options pour personnaliser la taille de la fenêtre d'affichage.
+Permettre de sélectionner un autre écran à capturer.
+Ajouter un compteur de FPS (images par seconde) pour évaluer les performances.
+Utiliser un thread ou un processus séparé pour la capture d'écran afin d'améliorer les performances.
+
+
+
+## 5 Run with an Arduino to tracking a target
+
+Matériel
+Un Arduino connecté à votre ordinateur via le port série.
+Un jeu FPS.
+Utilisation
+Placez votre modèle : Copiez votre fichier de modèle YOLOv8 entraîné (best_fort.pt) dans le même répertoire que ce script.
+Connectez l'Arduino : Connectez votre Arduino à votre ordinateur et notez le port COM utilisé (par exemple, COM10).
+Modifiez le script :
+Remplacez 'COM10' dans la variable ser par le port COM correct de votre Arduino.
+Ajustez les paramètres suivants dans le script en fonction de votre configuration :
+CONFIDENCE_THRESHOLD : Seuil de confiance pour la détection.
+IOU_THRESHOLD : Seuil IOU pour le NMS.
+frame_width, frame_height : Taille de la fenêtre de capture et de traitement.
+GAME_WIDTH, GAME_HEIGHT : Résolution du jeu.
+DEAD_ZONE : Zone morte autour du centre de l'écran où les mouvements ne sont pas envoyés à l'Arduino.
+EXCLUDED_REGION : Zone de l'écran à exclure de la détection (utile pour éviter de cibler des éléments de l'interface du jeu).
+Exécutez le script :
+Bash
+
+python Aimbot_Assist_w_Arduino.py
+Fonctionnement
+Le script capture une portion de l'écran, effectue une détection d'objets avec YOLOv8, sélectionne la cible la plus proche du centre de l'écran et envoie les coordonnées de la cible à l'Arduino. L'Arduino peut ensuite être programmé pour contrôler la souris ou d'autres périphériques d'entrée pour viser dans le jeu.
+
+Ctrl : Active/désactive la détection.
+Le script affiche une fenêtre avec le flux vidéo, les détections, la cible sélectionnée (un cercle vert) et la zone d'exclusion (un rectangle rouge).
+Configuration du jeu
+Assurez-vous que les paramètres du jeu (résolution, sensibilité de la souris) sont configurés de manière appropriée pour fonctionner avec le script.  Il peut être nécessaire d'ajuster les paramètres du script (en particulier SCALE_FACTOR, OFFSET_X, OFFSET_Y) pour une performance optimale.
+
+Code Arduino (exemple) 
+Voici un exemple de code Arduino qui reçoit les commandes du script Python et simule des mouvements de souris :
+
+C++
+
+#include <Mouse.h>
+
+void setup() {
+  Serial.begin(9500);
+  Mouse.begin();
+}
+
+void loop() {
+  if (Serial.available() > 0) {
+    String command = Serial.readStringUntil('\n');
+    int x = command.substring(0, command.indexOf(',')).toInt();
+    int y = command.substring(command.indexOf(',') + 1).toInt();
+
+    Mouse.move(x, y, 0); // Déplacer la souris (x, y, 0)
+  }
+}
+Important : Ce code Arduino est un exemple. Vous devrez peut-être l'adapter en fonction de vos besoins et de la façon dont vous souhaitez contrôler le jeu.
+
+Limitations
+Les performances peuvent varier en fonction de la puissance de l'ordinateur, de la complexité du modèle YOLOv8 et de la résolution de l'écran.
+Le suivi de cible peut être perdu si l'objet cible est obstrué ou sort de l'écran.
+Ce script est un point de départ. Vous devrez probablement l'affiner pour obtenir les résultats souhaités dans votre jeu spécifique.
+
+
 
 ## Conclusion
 Avec ces étapes, vous pouvez entraîner un modèle YOLOv8 sur un dataset personnalisé et le convertir au format ONNX pour une intégration facile dans vos projets.
