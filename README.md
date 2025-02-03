@@ -1,4 +1,4 @@
-# README : Custom Training avec YOLOv8 et Conversion ONNX
+# README : yolov8-tracking-fps
 
 Ce document explique comment effectuer l'entraînement d'un modèle YOLOv8 sur un dataset personnalisé pour la détection d'objets, ainsi que la conversion du modèle final au format ONNX pour une intégration dans un script.
 
