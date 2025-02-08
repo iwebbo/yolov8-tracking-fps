@@ -256,6 +256,8 @@ Avec ces étapes, vous pouvez entraîner un modèle YOLOv8 sur un dataset person
 ### Voici un petit exemple pour un FPS 
 https://streamable.com/xf2lst 
 
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/lFrydrUvbJc/0.jpg)](https://www.youtube.com/watch?v=lFrydrUvbJc)
+
 https://youtu.be/lFrydrUvbJc?si=hPbMRpqrRUQb6bWZ
 
 Le script fournit gère également les zones d'exclusions, afin que la detection ne se fasse pas dans cette frame.
