@@ -250,12 +250,13 @@ Le suivi de cible peut être perdu si l'objet cible est obstrué ou sort de l'é
 Ce script est un point de départ. Vous devrez probablement l'affiner pour obtenir les résultats souhaités dans votre jeu spécifique.
 
 
-
 ## Conclusion
 Avec ces étapes, vous pouvez entraîner un modèle YOLOv8 sur un dataset personnalisé et le convertir au format ONNX pour une intégration facile dans vos projets.
 
 ### Voici un petit exemple pour un FPS 
 https://streamable.com/xf2lst 
+
+https://youtu.be/lFrydrUvbJc?si=hPbMRpqrRUQb6bWZ
 
 Le script fournit gère également les zones d'exclusions, afin que la detection ne se fasse pas dans cette frame.
 Si vous voulez trouver et entrainer d'autres modèles, https://universe.roboflow.com 
