@@ -4,7 +4,7 @@ import cv2
 
 def main():
     # Chemin vers votre modèle YOLOv8 entraîné
-    model_path = "best_fort.pt"
+    model_path = "valorantv2.pt"
     # Chemin vers l'image que vous souhaitez tester
     image_path = "capture.jpg"
     # Liste des noms de classes correspondant à votre modèle
