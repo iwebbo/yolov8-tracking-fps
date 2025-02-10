@@ -1,6 +1,137 @@
 # README : yolov8-tracking-fps
 
-###ENGLISH VERSION COMING SOON
+#### ENGLISH VERSION #####
+
+## 📌 Prerequisites
+### 🖥 Hardware:
+
+A computer capable of running Python and deep learning models.
+(Optional) An Arduino connected via a serial port (e.g., Arduino Uno). 
+A USB cable to connect the computer and the Arduino.
+- Aimbot_Assist_w_Arduino.py
+
+A new project without Arduino can be used
+- Aimbot_2025v11_onnx.py
+- 📢 Need import onnxruntime as ort
+
+If you have any questions about the hardware of Yolov8 process, please read this document : https://www.digitalocean.com/community/tutorials/yolov8-for-gpu-accelerate-object-detection 
+
+### 🛠 Software:
+
+Python 3.8+
+PyTorch
+Ultralytics YOLOv8 (pip install ultralytics)
+ONNX and ONNX Runtime (pip install onnx onnxruntime)
+A custom dataset annotated in YOLO format (using tools like LabelImg or Roboflow).
+
+### 🔧 Dataset Organization
+
+Your dataset should follow this structure:
+```
+custom_dataset/
+|-- train/images/  # Training images
+|-- train/labels/  # Corresponding YOLO format labels (.txt)
+|-- val/images/    # Validation images
+|-- val/labels/    # Corresponding validation labels
+
+Each .txt file should contain annotations in YOLO format:
+
+<class_id> <x_center> <y_center> <width> <height>
+```
+👉 Find datasets: Roboflow Universe
+
+### ⚙️ YAML Configuration File
+Create a custom_dataset.yaml file:
+```
+task: detect
+train: path/to/custom_dataset/train
+val: path/to/custom_dataset/val
+
+names:
+  0: Enemy
+  1: Weapon
+```
+Replace paths and class names accordingly.
+
+✨ A tips, for have a good model, you need to increase your images (rotation differents, ligth variable...), but don't worry, the script in python_dataset_increase/Data_Augmentation.py. 
+Will be usefull, be carefull and change of your path folder (Images & Labels)
+```
+# === 📌 CONFIGURATION ===
+INPUT_IMAGES_DIR = "dataset/images/"
+INPUT_LABELS_DIR = "dataset/labels/"
+OUTPUT_IMAGES_DIR = "dataset_augmented/images/"
+OUTPUT_LABELS_DIR = "dataset_augmented/labels/"
+AUGMENTATIONS_PER_IMAGE = 15  # Numbers of Variations --> 10K images will be a good model ! 
+```
+
+### 🚀 Training YOLOv8
+
+#### Features
+Model Loading: Choose between a new model, pre-trained model, or transfer learning.
+Training: Specify epochs and batch size.
+Validation: Validate after training.
+Export: Convert to multiple formats.
+
+#### Function Parameters
+load (str): Load method ('new', 'pre', 'tran')
+traindata (str): Training data YAML file (default: "fortnite.yaml")
+epochs (int): Training epochs (default: 50)
+batch_size (int): Batch size (default: 16)
+export (bool): Export after training (default: True)
+val (bool): Perform validation (default: True)
+
+Train YOLOv8
+```
+def custom_train(load='pre', traindata="fortnite.yaml", epochs=50, batch_size=16, export=True, val=True):
+    from ultralytics import YOLO
+    if load == 'new':
+        model = YOLO('yolov8n.yaml')
+    elif load == 'pre':
+        model = YOLO('yolov8n.pt')
+    elif load == 'tran':
+        model = YOLO('yolov8n.yaml').load('yolov8n.pt')
+```
+Model is saved in runs/detect/custom_model/.
+
+### 🔄 Convert to ONNX
+
+Conversion
+```
+model.export(format='onnx')
+```
+ONNX file saved in runs/detect/export/.
+Validate PT Model
+
+Installation
+```
+pip install torch ultralytics opencv-python
+```
+Run Script
+```
+python check_from_capture_pt_file_detect.py
+```
+
+### 🛠 Integration into Detection Script
+
+Validate ONNX Model
+```
+python check_from_capture_onnx_file_detect.py
+```
+Live Detection with PT file
+```
+python live_check_yolov8.py
+```
+
+### 📢 Conclusion
+
+Train YOLOv8, convert to ONNX, and integrate into your project.
+🎯 Example FPS tracking: Streamable
+📽️ YouTube Demo
+Find more datasets: 👉 Roboflow Universe
+
+
+
+#### FRENCH VERSION #####
 
 Ce document explique comment effectuer l'entraînement d'un modèle YOLOv8 sur un dataset personnalisé pour la détection d'objets, ainsi que la conversion du modèle final au format ONNX pour une intégration dans un script.
 
@@ -250,12 +381,15 @@ Le suivi de cible peut être perdu si l'objet cible est obstrué ou sort de l'é
 Ce script est un point de départ. Vous devrez probablement l'affiner pour obtenir les résultats souhaités dans votre jeu spécifique.
 
 
-
 ## Conclusion
 Avec ces étapes, vous pouvez entraîner un modèle YOLOv8 sur un dataset personnalisé et le convertir au format ONNX pour une intégration facile dans vos projets.
 
 ### Voici un petit exemple pour un FPS 
 https://streamable.com/xf2lst 
+
+[![IMAGE ALT TEXT HERE](https://img.youtube.com/vi/lFrydrUvbJc/0.jpg)](https://www.youtube.com/watch?v=lFrydrUvbJc)
+
+https://youtu.be/lFrydrUvbJc?si=hPbMRpqrRUQb6bWZ
 
 Le script fournit gère également les zones d'exclusions, afin que la detection ne se fasse pas dans cette frame.
 Si vous voulez trouver et entrainer d'autres modèles, https://universe.roboflow.com 
