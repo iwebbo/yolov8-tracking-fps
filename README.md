@@ -1,10 +1,13 @@
 # README : yolov8-tracking-fps
 
+#### ENGLISH VERSION #####
+
 ## 📌 Prerequisites
 ### 🖥 Hardware:
 
 A computer capable of running Python and deep learning models.
-An Arduino connected via a serial port (e.g., Arduino Uno).
+An Arduino connected via a serial port (e.g., Arduino Uno). 
+  A new project without Arduino will be release
 A USB cable to connect the computer and the Arduino.
 
 ### 🛠 Software:
@@ -111,7 +114,7 @@ Find more datasets: 👉 Roboflow Universe
 
 
 
-
+#### FRENCH VERSION #####
 
 Ce document explique comment effectuer l'entraînement d'un modèle YOLOv8 sur un dataset personnalisé pour la détection d'objets, ainsi que la conversion du modèle final au format ONNX pour une intégration dans un script.
 
