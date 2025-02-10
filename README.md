@@ -6,9 +6,15 @@
 ### 🖥 Hardware:
 
 A computer capable of running Python and deep learning models.
-An Arduino connected via a serial port (e.g., Arduino Uno). 
-  A new project without Arduino will be release
+(Optional) An Arduino connected via a serial port (e.g., Arduino Uno). 
 A USB cable to connect the computer and the Arduino.
+- Aimbot_Assist_w_Arduino.py
+
+A new project without Arduino can be used
+- Aimbot_2025v11_onnx.py
+- 📢 Need import onnxruntime as ort
+
+If you have any questions about the hardware of Yolov8 process, please read this document : https://www.digitalocean.com/community/tutorials/yolov8-for-gpu-accelerate-object-detection 
 
 ### 🛠 Software:
 
@@ -46,6 +52,17 @@ names:
   1: Weapon
 ```
 Replace paths and class names accordingly.
+
+✨ A tips, for have a good model, you need to increase your images (rotation differents, ligth variable...), but don't worry, the script in python_dataset_increase/Data_Augmentation.py. 
+Will be usefull, be carefull and change of your path folder (Images & Labels)
+```
+# === 📌 CONFIGURATION ===
+INPUT_IMAGES_DIR = "dataset/images/"
+INPUT_LABELS_DIR = "dataset/labels/"
+OUTPUT_IMAGES_DIR = "dataset_augmented/images/"
+OUTPUT_LABELS_DIR = "dataset_augmented/labels/"
+AUGMENTATIONS_PER_IMAGE = 15  # Numbers of Variations --> 10K images will be a good model ! 
+```
 
 ### 🚀 Training YOLOv8
 
