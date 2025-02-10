@@ -1,7 +1,37 @@
 # README : yolov8-tracking-fps
 
 ###ENGLISH VERSION COMING SOON
+##📌 Prerequisites
 
+##🖥 Hardware:
+
+A computer capable of running Python and deep learning models.
+An Arduino connected via a serial port (e.g., Arduino Uno).
+A USB cable to connect the computer and the Arduino.
+
+##🛠 Software:
+
+Python 3.8+
+PyTorch
+Ultralytics YOLOv8 (pip install ultralytics)
+ONNX and ONNX Runtime (pip install onnx onnxruntime)
+A custom dataset annotated in YOLO format (using tools like LabelImg or Roboflow).
+
+##🔧 Dataset Organization
+
+Your dataset should follow this structure:
+```
+custom_dataset/
+|-- train/images/  # Training images
+|-- train/labels/  # Corresponding YOLO format labels (.txt)
+|-- val/images/    # Validation images
+|-- val/labels/    # Corresponding validation labels
+
+Each .txt file should contain annotations in YOLO format:
+
+<class_id> <x_center> <y_center> <width> <height>
+```
+👉 Find datasets: Roboflow Universe
 
 
 Ce document explique comment effectuer l'entraînement d'un modèle YOLOv8 sur un dataset personnalisé pour la détection d'objets, ainsi que la conversion du modèle final au format ONNX pour une intégration dans un script.
