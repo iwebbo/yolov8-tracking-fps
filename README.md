@@ -1,15 +1,13 @@
 # README : yolov8-tracking-fps
 
-###ENGLISH VERSION COMING SOON
-##📌 Prerequisites
-
-##🖥 Hardware:
+## 📌 Prerequisites
+### 🖥 Hardware:
 
 A computer capable of running Python and deep learning models.
 An Arduino connected via a serial port (e.g., Arduino Uno).
 A USB cable to connect the computer and the Arduino.
 
-##🛠 Software:
+### 🛠 Software:
 
 Python 3.8+
 PyTorch
@@ -17,7 +15,7 @@ Ultralytics YOLOv8 (pip install ultralytics)
 ONNX and ONNX Runtime (pip install onnx onnxruntime)
 A custom dataset annotated in YOLO format (using tools like LabelImg or Roboflow).
 
-##🔧 Dataset Organization
+### 🔧 Dataset Organization
 
 Your dataset should follow this structure:
 ```
