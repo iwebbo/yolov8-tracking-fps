@@ -31,6 +31,87 @@ Each .txt file should contain annotations in YOLO format:
 ```
 👉 Find datasets: Roboflow Universe
 
+### ⚙️ YAML Configuration File
+Create a custom_dataset.yaml file:
+```
+task: detect
+train: path/to/custom_dataset/train
+val: path/to/custom_dataset/val
+
+names:
+  0: Enemy
+  1: Weapon
+```
+Replace paths and class names accordingly.
+
+### 🚀 Training YOLOv8
+
+#### Features
+Model Loading: Choose between a new model, pre-trained model, or transfer learning.
+Training: Specify epochs and batch size.
+Validation: Validate after training.
+Export: Convert to multiple formats.
+
+#### Function Parameters
+load (str): Load method ('new', 'pre', 'tran')
+traindata (str): Training data YAML file (default: "fortnite.yaml")
+epochs (int): Training epochs (default: 50)
+batch_size (int): Batch size (default: 16)
+export (bool): Export after training (default: True)
+val (bool): Perform validation (default: True)
+
+Train YOLOv8
+```
+def custom_train(load='pre', traindata="fortnite.yaml", epochs=50, batch_size=16, export=True, val=True):
+    from ultralytics import YOLO
+    if load == 'new':
+        model = YOLO('yolov8n.yaml')
+    elif load == 'pre':
+        model = YOLO('yolov8n.pt')
+    elif load == 'tran':
+        model = YOLO('yolov8n.yaml').load('yolov8n.pt')
+```
+Model is saved in runs/detect/custom_model/.
+
+### 🔄 Convert to ONNX
+
+Conversion
+```
+model.export(format='onnx')
+```
+ONNX file saved in runs/detect/export/.
+Validate PT Model
+
+Installation
+```
+pip install torch ultralytics opencv-python
+```
+Run Script
+```
+python check_from_capture_pt_file_detect.py
+```
+
+### 🛠 Integration into Detection Script
+
+Validate ONNX Model
+```
+python check_from_capture_onnx_file_detect.py
+```
+Live Detection with PT file
+```
+python live_check_yolov8.py
+```
+
+### 📢 Conclusion
+
+Train YOLOv8, convert to ONNX, and integrate into your project.
+🎯 Example FPS tracking: Streamable
+📽️ YouTube Demo
+Find more datasets: 👉 Roboflow Universe
+
+
+
+
 
 Ce document explique comment effectuer l'entraînement d'un modèle YOLOv8 sur un dataset personnalisé pour la détection d'objets, ainsi que la conversion du modèle final au format ONNX pour une intégration dans un script.
 
