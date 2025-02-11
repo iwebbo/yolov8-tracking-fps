@@ -1,6 +1,10 @@
 # README : yolov8-tracking-fps
 
-#### ENGLISH VERSION #####
+#### ENGLISH VERSION 
+
+## Technologies 
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=for-the-badge&logo=python&logoColor=white) ![Windows](https://img.shields.io/badge/Windows-0078D6?style=for-the-badge&logo=windows&logoColor=white) ![Yolov](https://img.shields.io/badge/Yolov-FCC624?style=for-the-badge&logo=Yolov&logoColor=black)
 
 ## 📌 Prerequisites
 ### 🖥 Hardware:
